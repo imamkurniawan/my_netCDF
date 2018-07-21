@@ -2,11 +2,6 @@ from netCDF4 import Dataset
 import numpy as np
 
 def extractNC(nc_file):
-    
-    # nc_file = 'Z:\\IMERG_DATA\NTB\\3B-DAY.MS.MRG.3IMERG.20161231-S000000-E235959.V05.nc4.nc'
-    # return nc_file
-    
-    # nc_file = nc_file
     fh = Dataset(nc_file, mode='r')
     lons = fh.variables['lon'][:]
     lats = fh.variables['lat'][:]
@@ -14,18 +9,17 @@ def extractNC(nc_file):
     prec_units = fh.variables['precipitationCal'].units
     for x in range(len(lons)):
         for y in range(len(lats)):
-            print nc_file,
-            print x,
-            print y,
-            print lons[x],
-            print lats[y],
-            print prec[x,y]    
-    # fh.close()
+            # print nc_file, x, y, lons[x],lats[y], prec[x,y] 
+            out = nc_file+" "+str(x)+" "+str(y)+" "+str(lons[x])+" "+str(lats[y])+" "+str(prec[x,y])+ "\r\n"
+            out_file.write(out)
+    fh.close()
 
 import os
-path = 'Z:\\IMERG_DATA\NTB\\'
+path = 'D:\\IMERG_DATA\NTB\\'
 files = os.listdir(path)
+out_file = open("out.txt","w")
+
 for name in files:
     full_name = path+name
-    # print full_name
-    extractNC(full_name)
+    baris = extractNC(full_name)
+
